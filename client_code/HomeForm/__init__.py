@@ -1,50 +1,148 @@
-from ._anvil_designer import HomeFormTemplate
-from anvil import *
-import anvil.server
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
+#include <stdio.h>
 
-#
-# This is the Python code that makes this feedback form work.
-# It's a Python class, with a method that runs when the user
-# clicks the SUBMIT button.
-#
-# When the button is clicked, we send the contents of the
-# text boxes to our Server Module. The Server Module records
-# the feedback in the database, and sends an email to the
-# app's owner (that's you!).
-#
-# To find the Server Module, look under "Server Code" on the
-# left.
-#
 
-class HomeForm(HomeFormTemplate):
+void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
 
-  def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
-    self.init_components(**properties)
+// Hàm sắp xếp dãy số nguyên bằng thuật toán Selection Sort
+void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        int temp = arr[minIndex];
+        arr[minIndex] = arr[i];
+        arr[i] = temp;
+    }
+}
 
-    # Any code you write here will run when the form opens.
+// Hàm sắp xếp dãy số nguyên bằng thuật toán Bubble Sort
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
 
-  def submit_button_click(self, **event_args):
-    # This method runs when the button is clicked.
-    # First, we grab the contents of the text boxes:
-    name = self.name_box.text
-    email = self.email_box.text
-    feedback = self.feedback_box.text
+// Hàm sắp xếp dãy số nguyên bằng thuật toán Merge Sort
+void merge(int arr[], int left, int mid, int right) {
+    int i, j, k;
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
 
-    # Now we call our Server Module to save our input
-    # in the database and send you an email:
-    anvil.server.call('add_feedback', name, email, feedback)
-    # (Hint: Find ServerModule1 under "Server Code" on the
-    # left. Click on the folder icon if you can't see it.)
+    int L[n1], R[n2];
 
-    # Display something to the user so they know it worked:
-    Notification("Feedback submitted!").show()
-    self.clear_inputs()
+    for (i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
 
-  def clear_inputs(self):
-    self.name_box.text = ""
-    self.email_box.text = ""
-    self.feedback_box.text = ""
+    i = 0;
+    j = 0;
+    k = left;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(int arr[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+}
+
+// Hàm in ra dãy số nguyên
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int n;
+    printf("Nhap so luong phan tu n: ");
+    scanf("%d", &n);
+
+    int arr[n];
+    printf("Nhap vao cac phan tu:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Chon thu tu sap xep:\n");
+    printf("1. Insertion Sort\n");
+    printf("2. Selection Sort\n");
+    printf("3. Bubble Sort\n");
+    printf("4. Merge Sort\n");
+    int choice;
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            insertionSort(arr, n);
+            printf("Danh sachsau sắp xếp bằng thuật toán Insertion Sort:\n");
+            printArray(arr, n);
+            break;
+        case 2:
+            selectionSort(arr, n);
+            printf("Danh sach sau sắp xếp bằng thuật toán Selection Sort:\n");
+            printArray(arr, n);
+            break;
+        case 3:
+            bubbleSort(arr, n);
+            printf("Danh sach sau sắp xếp bằng thuật toán Bubble Sort:\n");
+            printArray(arr, n);
+            break;
+        case 4:
+            mergeSort(arr, 0, n - 1);
+            printf("Danh sach sau sắp xếp bằng thuật toán Merge Sort:\n");
+            printArray(arr, n);
+            break;
+        default:
+            printf("Lua chon khong hop le.\n");
+            break;
+    }
+
+    return 0;
+}
