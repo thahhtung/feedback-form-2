@@ -31,13 +31,14 @@ services:
   client_config: {}
   server_config: {}
 cta: {preset: feedback_form_welcome}
+startup: null
 package_name: Feedback_Form_2
 allow_embedding: false
 name: Feedback Form 2
 runtime_options: {version: 2, server_version: python3-sandbox, client_version: '3',
   server_spec: null}
 metadata: {}
-startup_form: HomeForm
+startup_form: Form1
 db_schema:
   feedback:
     client: none
